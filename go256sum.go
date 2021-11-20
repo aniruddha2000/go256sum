@@ -27,12 +27,15 @@ func main() {
 			panic(err)
 		}
 		originalFileContentInStr := string(originalFileContent)
-		// fmt.Println(originalFileContentInStr)
 
-		// Check the of the string generated from the hash and the original
-		// file content is same or not
-		if hex.EncodeToString([]byte(shaFileContentInStr[0])) != originalFileContentInStr {
-			fmt.Errorf("want %v; got %v", originalFileContentInStr, shaFileContentInStr[0])
+		// Get the hash from the file content
+		bytes := sha256.Sum256([]byte(originalFileContentInStr))
+		hex := hex.EncodeToString(bytes[:])
+		fmt.Println(hex)
+
+		// Check the current file hash is same or not with the checksum file hash
+		if shaFileContentInStr[0] != hex {
+			fmt.Printf("want %v; got %v", originalFileContentInStr, shaFileContentInStr[0])
 		} else {
 			fmt.Printf("%v : OK", originalFileName)
 		}
